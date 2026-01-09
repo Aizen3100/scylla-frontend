@@ -4,7 +4,7 @@ import axios from 'axios';
 export const adminUrl = "https://scylla-admin.vercel.app"
 // uper pan url change karvu admin dashboard nu.......................
 const api = axios.create({
-    baseURL : "https://scylla-backend.onrender.com", //change with backend url
+    baseURL : "https://scylla-server.onrender.com", //change with backend url
     // headers: { "Content-Type": "application/json" }
     withCredentials: true,
 
