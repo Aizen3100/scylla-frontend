@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 // please also set me as admin dashboard url when you deploy
-export const adminUrl = "https://scylla-admin.vercel.app"
+export const adminUrl = process.env.REACT_APP_ADMIN_URL;
 // uper pan url change karvu admin dashboard nu.......................
 const api = axios.create({
-    baseURL : "https://scylla-server.onrender.com", //change with backend url
+    baseURL : process.env.REACT_APP_baseURL, //change with backend url
     // headers: { "Content-Type": "application/json" }
     withCredentials: true,
 
