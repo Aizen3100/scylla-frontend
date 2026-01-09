@@ -1,14 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
 
-// please also set me as admin dashboard url when you deploy
-export const adminUrl = process.env.REACT_APP_ADMIN_URL;
-// uper pan url change karvu admin dashboard nu.......................
+// VITE environment variables
+export const adminUrl = import.meta.env.VITE_ADMIN_URL;
+
 const api = axios.create({
-    baseURL : process.env.REACT_APP_baseURL, //change with backend url
-    // headers: { "Content-Type": "application/json" }
-    withCredentials: true,
-
-})
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
+});
 
 api.interceptors.request.use((req) => {
   const token = localStorage.getItem("token");
