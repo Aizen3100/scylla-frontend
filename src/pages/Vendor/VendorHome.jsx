@@ -1,9 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../components/vendor/Header';
 import { getVendorProfile } from "../../api/vendor.api";
-import {getMyProduct} from "../../api/product.api";
 import './VendorHome.css';
 
 const VendorHome = () => {
@@ -11,7 +10,7 @@ const VendorHome = () => {
   const navigate = useNavigate();
 
   const [vendor, setVendor] = useState(null);
-   const [productCount, setProductCount] = useState(0);
+  const [productCount, setProductCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -28,7 +27,9 @@ const VendorHome = () => {
         } else {
           const res = await getVendorProfile();
           setVendor(res.data);
-          console.log("Vendor logo:", vendor.logo);
+
+          // ✅ FIX: do NOT use stale vendor state
+          console.log("Vendor logo:", res.data?.logo);
 
           localStorage.setItem("vendorProfile", JSON.stringify(res.data));
         }
@@ -44,27 +45,15 @@ const VendorHome = () => {
     vendorData();
   }, []);
 
-
-//   useEffect(() => {
-//   const fetchProductCount = async () => {
-//     try {
-//       const res = await getMyProduct();
-//       setProductCount(res.data.productCount || 0); // ✅ dynamic
-//     } catch (err) {
-//       console.log(err.message);
-//       setError("Failed to load product count");
-//     }
-//   };
-
-//   fetchProductCount();
-// }, []);
-
-
+  // ---------------- SAFE UI STATES ----------------
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
-  if (!vendor)[
-    navigate("/vendor/login")
-  ]; 
+
+  // ✅ FIX: proper redirect logic
+  if (!vendor) {
+    navigate("/vendor/login");
+    return null;
+  }
 
   return (
     <div className="vendor-home">
@@ -80,8 +69,10 @@ const VendorHome = () => {
               {/* ✅ TITLE + FORMULA ICON */}
               <div className="vendor-title-row">
                 <h1 className="vendor-title">{vendor.businessName}</h1>
+
                 <div className="vendor-title-icon">
-                  {/* {vendor.logo ? ( */}
+                  {/* ✅ FIX: null-safe logo rendering */}
+                  {vendor?.logo && (
                     <img
                       src={vendor.logo}
                       alt="Vendor Logo"
@@ -92,9 +83,7 @@ const VendorHome = () => {
                         borderRadius: "50%"
                       }}
                     />
-                  {/* ) : (
-                    "🏎️"
-                  )} */}
+                  )}
                 </div>
               </div>
 
@@ -106,7 +95,9 @@ const VendorHome = () => {
 
               <div className="vendor-meta">
                 <span className="meta-item">📍 {vendor.location}</span>
-                <span className="meta-item">📅 Since {vendor?.createdAt?.slice(0, 4)}</span>
+                <span className="meta-item">
+                  📅 Since {vendor?.createdAt?.slice(0, 4)}
+                </span>
               </div>
 
               <div className="skills-badges">
@@ -177,16 +168,8 @@ const VendorHome = () => {
             <h2 className="section-title">Your Products & Services</h2>
 
             <div className="products-list">
-              {/* <div className="product-card"> */}
-                {/* <div className="product-header"> */}
-                  {/* <h4 className="product-name">Carbon Fiber Splitter Kit</h4>
-                  <span className="badge badge-active">Active</span> */}
-                </div>
-                {/* <p className="product-category">Aerodynamics / Body Parts</p>
-                <p className="product-price">$0</p>
-                <button className="btn btn-secondary btn-small">Request Quote</button> */}
-              {/* </div> */}
-            {/* </div> */}
+              {/* Placeholder for future product cards */}
+            </div>
 
             <button className="btn btn-primary btn-full-width">
               Manage All Listings
@@ -198,15 +181,8 @@ const VendorHome = () => {
             <h2 className="section-title">Recent Quotes & Inquiries</h2>
 
             <div className="quotes-list">
-              {/* <div className="quote-card"> */}
-                {/* <div className="quote-header"> */}
-                  {/* <h4 className="quote-client">Thunder Racing Team</h4>
-                  <span className="badge badge-new">New</span> */}
-                </div>
-                {/* <p className="quote-product">Carbon Fiber Splitter Kit</p>
-                <p className="quote-date">2 hours ago</p> */}
-              {/* </div> */}
-            {/* </div> */}
+              {/* Placeholder for future quotes */}
+            </div>
 
             <button className="btn btn-primary btn-full-width">
               View All Quotes & Inquiries
